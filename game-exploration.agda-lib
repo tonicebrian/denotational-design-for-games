@@ -1,0 +1,7 @@
+name: game-exploration
+depend:
+  standard-library
+include:
+  src
+flags:
+  --guardedness
