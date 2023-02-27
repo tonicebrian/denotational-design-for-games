@@ -1,3 +1,7 @@
+# TODO
+
+- [  ] Learn how to create sum types in Agda so game output is either a PlayerRequest or a Result
+
 # Introduction
 
 This module is an initial exploration on how to define and present all the definitions for a game, a very simplistic game.
@@ -34,3 +38,11 @@ data Result : Set where
   Winner : Player -> Result
   Tie : Result
 ```
+
+# Denotational specification
+
+I'm going to follow the pattern of thinking of, *if another person would implement this game which are the properties I would expect*.
+Let's assume that our game is a function from streams of player actions to a stream of game outputs.
+
+1. An empty input stream produces an empty output stream
+2. Any stream after the first appearance of one action from player A and another one from player B produces a stream in the form `PlayerRequest :: PlayerRequest .... :: Result :: []`
