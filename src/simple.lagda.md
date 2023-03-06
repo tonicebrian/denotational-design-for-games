@@ -27,7 +27,7 @@ Players will be able to submit an action that is a number between 0 and 10.
 
 ```agda
 -- TODO. Learn how to create this type alias
--- type Action = Fin 10
+type Action {ℕ} = Fin ℕ
 ```
 
 Once actions from both players have been received the game engine compares both values and declares winner by telling the user who sent
