@@ -13,6 +13,7 @@ Show that you can swap parenthesis for naturals
 
 ```agda
 +-swap : ∀ (m n p : ℕ) → m + (n + p) ≡ n + (m + p)
++-swap zero n p = refl
 +-swap m n p =
       begin
         m + (n + p)
