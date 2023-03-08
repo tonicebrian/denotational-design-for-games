@@ -27,17 +27,24 @@ data Player : Set where
 Players will be able to submit an action that is a number between 0 and 10.
 
 ```agda
--- TODO. Learn how to create this type alias
-type Action {ℕ} = Fin ℕ
+-- data Move: Player → Set where
+--   send : Player → Fin 10 → Move Player
 ```
 
 Once actions from both players have been received the game engine compares both values and declares winner by telling the user who sent
 the max value or declares a Tie when both users picked the same value.
 
 ```agda
+data Request : Set where
+  req : Player -> Request
+
 data Result : Set where
-  Winner : Player -> Result
-  Tie : Result
+  winner : Player -> Result
+  tie : Result
+
+data GameOutput : Set where
+  request : Request -> GameOutput
+  result : Result -> GameOutput
 ```
 
 # Denotational specification
@@ -46,7 +53,7 @@ I'm going to follow the pattern of thinking of, _if another person would impleme
 Let's assume that our game is a function from streams of player actions to a stream of game outputs.
 
 1. An empty input stream produces an empty output stream
-2. Any stream after the first appearance of one action from player A and another one from player B produces a stream in the form `PlayerRequest :: PlayerRequest .... :: Result :: []`
+2. Any stream after the first appearance of one action from player A and another one from player B produces a stream in the form `Request :: Request .... :: Result :: []`
 
 # Operational specification
 
