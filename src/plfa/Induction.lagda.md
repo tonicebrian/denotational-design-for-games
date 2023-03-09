@@ -17,9 +17,9 @@ Show that you can swap parenthesis for naturals
 +-swap m n p =
       begin
         m + (n + p)
-      ≡⟨ +-assoc m n p ⟩
+      ≡⟨  sym ( +-assoc m n p)  ⟩
         (m + n) + p
-      ≡⟨ cong (_+ p) +-comm m n ⟩
+      ≡⟨ cong (_+ p) (+-comm m n) ⟩
         (n + m) + p
       ≡⟨ +-assoc n m p ⟩
         n + (m + p)
