@@ -25,3 +25,16 @@ Show that you can swap parenthesis for naturals
         n + (m + p)
       ∎
 ```
+
+Show multiplication distributes over addition, that is,
+
+```agda
+*-my-distrib-+ : ∀ (m n p : ℕ) → (m + n) * p ≡ m * p + n * p
+*-my-distrib-+ zero n p = refl
+*-my-distrib-+ (suc m) n p =
+   begin
+     (suc m  + n) * p
+   ≡⟨ cong (_* p) (+-comm (suc m) p) ⟩
+      (n + suc m) * p
+   ∎
+```
