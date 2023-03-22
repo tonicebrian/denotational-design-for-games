@@ -11,7 +11,8 @@ So let's start by defining a module and loading all relevant modules
 ```agda
 module simple where
 
-open import Data.Nat
+open import Data.Bool using (if_then_else_)
+import Data.Nat using (ℕ)
 open import Data.Fin
 open import Relation.Binary.PropositionalEquality
 ```
@@ -46,15 +47,6 @@ data GameOutput : Set where
   request : Request -> GameOutput
   result : Result -> GameOutput
 ```
-
-# Denotational specification
-
-I'm going to follow the pattern of thinking of, _if another person would implement this game which are the properties I would expect_.
-Let's assume that our game is a function from streams of player actions to a stream of game outputs.
-
-1. An empty input stream produces an empty output stream
-2. Any stream after the first appearance of one action from player A and another one from player B produces a stream in the form `Request :: Request .... :: Result :: []`
-
 # Operational specification
 
 By using transducers we can specify the game:
@@ -72,4 +64,26 @@ stateDiagram-v2
     [*] --> BRec : B Int / Req A
     BRec --> [*] : A Int / Result
     BRec --> BRec : B Int / Req B
+```
+
+# Denotational specification
+
+We have a functions that accepts two numbers and yields a correct evaluation. What exactly is correctness of evaluation?
+In other words, what are the logical conditions that define win, lose, or tie in the simplest unambiguous logical terms?
+
+Let me try to write a function for that:
+
+⚠ Doesn't compile with error: `Relation.Nullary.Dec (n < m) !=< Data.Bool.Bool`
+```agda
+my-game : Fin 10 -> Fin 10 -> Result
+my-game n m = if (n <? m) then winner A else winner B
+```
+
+I think that the demostration of the properties of my game would be something like:
+
+```agda
+proof-my-game: ∀ {n, m : Fin 10}
+   → n<m
+   -----------
+   my-game n m ≡ winner a
 ```
