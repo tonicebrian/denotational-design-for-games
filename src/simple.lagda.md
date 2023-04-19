@@ -15,6 +15,7 @@ open import Data.Bool using (if_then_else_)
 import Data.Nat using (ℕ)
 open import Data.Fin
 open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary
 ```
 
 Let's define a simple game that consist of 2 players. Players will be named after capital letters so we'll have `A` and `B` as players.
@@ -73,17 +74,17 @@ In other words, what are the logical conditions that define win, lose, or tie in
 
 Let me try to write a function for that:
 
-⚠ Doesn't compile with error: `Relation.Nullary.Dec (n < m) !=< Data.Bool.Bool`
 ```agda
 my-game : Fin 10 -> Fin 10 -> Result
-my-game n m = if (n <? m) then winner A else winner B
+my-game n m = if (does (n <? m)) then winner A else winner B
 ```
 
 I think that the demostration of the properties of my game would be something like:
 
 ```agda
-proof-my-game: ∀ {n, m : Fin 10}
-   → n<m
+proof-my-game : ∀ {n  m : Fin 10}
+   → n < m
    -----------
-   my-game n m ≡ winner a
+   → my-game n m ≡ winner A
+proof-my-game cond = {!!}
 ```
