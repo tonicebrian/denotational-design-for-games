@@ -16,6 +16,9 @@ import Data.Nat using (ℕ)
 open import Data.Fin
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
+import Relation.Binary.PropositionalEquality as Eq
+open Eq using (_≡_; refl; cong; sym)
+open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; step-≡; _∎)
 ```
 
 Let's define a simple game that consist of 2 players. Players will be named after capital letters so we'll have `A` and `B` as players.
@@ -82,9 +85,11 @@ my-game n m = if (does (n <? m)) then winner A else winner B
 I think that the demostration of the properties of my game would be something like:
 
 ```agda
-proof-my-game : ∀ {n  m : Fin 10}
+proof-my-game : ∀ (n  m : Fin 10)
    → n < m
    -----------
    → my-game n m ≡ winner A
-proof-my-game cond = {!!}
-```
+proof-my-game n m n<m = begin
+   my-game n m ≡⟨⟩
+   if (n<m) then winner A else winner B ≡⟨⟩
+  ```

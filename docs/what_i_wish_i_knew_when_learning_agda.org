@@ -1,0 +1,65 @@
+:PROPERTIES:
+:ID:       67549577-8c96-4d19-87a8-dd7cef2bb94f
+:END:
+#+title: What I wish I knew when Learning Agda
+
+- tags :: [[id:11f0edf5-d546-4c55-9081-ad662476cc73][Agda]]
+
+These are my notes for things I've been stumbling upon while learning Agda. This is inpired from
+[[https://smunix.github.io/dev.stephendiehl.com/hask/tutorial.pdf][What I Wish I Knew When Learning Haskell]]
+
+[[id:0a14f764-402d-46ff-a89f-15ab4749658f][Conan Elliot]] me pasó este enlace [[https://github.com/sseefried/learning-agda][Sean Seefried learns Agda]]
+
+* Tasks TODO
+** Remember yourself that you are working with constructors
+If you are like me and you come from a Haskell background, even if you know, you'll mentally read
+#+begin_src haskell
+suc n
+#+end_src
+as the function with siganature
+#+begin_src haskell
+suc :: Int -> Int
+#+end_src
+
+but you need to force yourself at remembering that we are working with constructors and that the most suitable
+representation is:
+#+begin_src haskell
+Suc Nat
+#+end_src
+
+where Nat is the recursive data type:
+
+#+begin_src haskell
+data Nat =
+  Zero
+  | Suc Nat
+#+end_src
+** TODO rewrite
+https://plfa.github.io/Equality/#rewriting-expanded
+* Language basics
+** with keyword
+In Agda, the with keyword is used for pattern matching on intermediate results of expressions without explicitly defining auxiliary functions. It is useful for simplifying code and improving readability.
+
+The with keyword introduces a new scope where the intermediate result can be referred to and pattern-matched on. Here's
+an example to demonstrate the usage of with in Agda:
+#+begin_src agda
+open import Data.Nat using (ℕ; zero; suc; _+_)
+
+plus : ℕ → ℕ → ℕ
+plus zero n = n
+plus (suc m) n with m + n
+... | res = suc res
+#+end_src
+** Bringing functions into scope
+I had the problem of accessing the ~does~ field accesor of a [[https://agda.github.io/agda-stdlib/Relation.Nullary.Decidable.Core.html#1485][Dec]] type.
+** Control flow structures
+Agda hasn't control flow structures as part of the language. They are functions that you import from libraries. As such
+the conditional if can be brought to scope with:
+
+#+begin_src agda
+import Data.Bool using (if_then_else_)
+#+end_src
+* Emacs tricks
+** How to use a REPL for Agda
+Sometimes you want to use a function defined in the module you are writting.
+Do ~C-c C-n~ and introduce the expression.
