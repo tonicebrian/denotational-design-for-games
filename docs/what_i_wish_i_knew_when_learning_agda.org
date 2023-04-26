@@ -50,8 +50,6 @@ plus zero n = n
 plus (suc m) n with m + n
 ... | res = suc res
 #+end_src
-** Bringing functions into scope
-I had the problem of accessing the ~does~ field accesor of a [[https://agda.github.io/agda-stdlib/Relation.Nullary.Decidable.Core.html#1485][Dec]] type.
 ** Control flow structures
 Agda hasn't control flow structures as part of the language. They are functions that you import from libraries. As such
 the conditional if can be brought to scope with:
@@ -59,7 +57,10 @@ the conditional if can be brought to scope with:
 #+begin_src agda
 import Data.Bool using (if_then_else_)
 #+end_src
-* Emacs tricks
+* Emacs usage
 ** How to use a REPL for Agda
 Sometimes you want to use a function defined in the module you are writting.
 Do ~C-c C-n~ and introduce the expression.
+** How to type symbols you copy from the internet
+Sometimes you read code and you want to type the symbols in the code but don't know how. Just copy and paste the symbols
+in Emacs, put the cursor on top of the symbol and do ~M-x quail-show-key~ . You'll get they keystrokes to reproduce it.

@@ -16,6 +16,7 @@ import Data.Nat using (ℕ)
 open import Data.Fin
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
+open import Data.Bool using (Bool; true; false)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_; refl; cong; sym)
 open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; step-≡; _∎)
@@ -89,7 +90,17 @@ proof-my-game : ∀ (n  m : Fin 10)
    → n < m
    -----------
    → my-game n m ≡ winner A
-proof-my-game n m n<m = begin
-   my-game n m ≡⟨⟩
-   if (n<m) then winner A else winner B ≡⟨⟩
+proof-my-game n m n<m =
+   begin
+     my-game n m
+   ≡⟨⟩
+     (if (does (n <? m)) then winner A else winner B)
+   ≡⟨ cong (λ x → if x then winner A else winner B) lem₁ ⟩
+     (if true then winner A else winner B)
+   ≡⟨⟩
+     winner A
+   ∎
+ where
+   lem₁ : does (n <? m) ≡ true
+   lem₁ = {!!}
   ```
