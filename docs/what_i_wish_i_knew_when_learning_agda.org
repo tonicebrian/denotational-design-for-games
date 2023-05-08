@@ -38,18 +38,30 @@ data Nat =
 https://plfa.github.io/Equality/#rewriting-expanded
 * Language basics
 ** with keyword
-In Agda, the with keyword is used for pattern matching on intermediate results of expressions without explicitly defining auxiliary functions. It is useful for simplifying code and improving readability.
-
-The with keyword introduces a new scope where the intermediate result can be referred to and pattern-matched on. Here's
-an example to demonstrate the usage of with in Agda:
+In the simplest case the with construct can be used just to discriminate on the result of an intermediate computation. For instance
 #+begin_src agda
-open import Data.Nat using (ℕ; zero; suc; _+_)
-
-plus : ℕ → ℕ → ℕ
-plus zero n = n
-plus (suc m) n with m + n
-... | res = suc res
+filter : {A : Set} → (A → Bool) → List A → List A
+filter p [] = []
+filter p (x ∷ xs) with p x
+filter p (x ∷ xs)    | true  = x ∷ filter p xs
+filter p (x ∷ xs)    | false = filter p xs
 #+end_src
+The clause containing the with-abstraction has no right-hand side. Instead it is followed by a number of clauses with an extra argument on the left, separated from the original arguments by a vertical bar (|).
+
+When the original arguments are the same in the new clauses you can use the ... syntax:
+
+#+begin_src agda
+filter : {A : Set} → (A → Bool) → List A → List A
+filter p [] = []
+filter p (x ∷ xs) with p x
+...                  | true  = x ∷ filter p xs
+...                  | false = filter p xs
+#+end_src
+In this case ... expands to filter p (x ∷ xs). There are three cases where you have to spell out the left-hand side:
+
+If you want to do further pattern matching on the original arguments.
+When the pattern matching on the intermediate result refines some of the other arguments (see Dot patterns).
+To disambiguate the clauses of nested with-abstractions (see Nested with-abstractions below).
 ** Control flow structures
 Agda hasn't control flow structures as part of the language. They are functions that you import from libraries. As such
 the conditional if can be brought to scope with:
@@ -64,3 +76,29 @@ Do ~C-c C-n~ and introduce the expression.
 ** How to type symbols you copy from the internet
 Sometimes you read code and you want to type the symbols in the code but don't know how. Just copy and paste the symbols
 in Emacs, put the cursor on top of the symbol and do ~M-x quail-show-key~ . You'll get they keystrokes to reproduce it.
+* Proofs
+** Learn the type signature of important functions for proofs
+*** begin
+it is just a placeholder to start a chain of equalities
+#+begin_src agda
+begin : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≡ y
+#+end_src
+The begin function in Agda is used to start a chain of equalities in a proof. It takes an equality proof x ≡ y and returns the same proof.
+*** step
+#+begin_src agda
+_≡⟨⟩_ : ∀ {a} {A : Set a} {x y z : A} → x ≡ y → y ≡ z → x ≡ z
+#+end_src
+
+The ≡<> function in Agda is used to combine two equality proofs into a new proof. Given proofs x ≡ y and y ≡ z, it returns a proof of x ≡ z
+*** step with proof
+#+begin_src agda
+_≡⟨_⟩_ : ∀ {a} {A : Set a} {x y z : A} → x ≡ y → y ≡ z → x ≡ z
+#+end_src
+
+ The ≡<_> function in Agda is the same as the ≡<> function. Given proofs x ≡ y and y ≡ z, it returns a proof of x ≡ z.
+*** qed
+#+begin_src agda
+∎ : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≡ y
+#+end_src
+
+The qed function in Agda is used to end a chain of equalities in a proof. It takes an equality proof x ≡ y and returns the same proof.

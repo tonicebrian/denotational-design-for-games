@@ -12,11 +12,13 @@ So let's start by defining a module and loading all relevant modules
 module simple where
 
 open import Data.Bool using (if_then_else_)
-import Data.Nat using (ℕ)
-open import Data.Fin
+open import Data.Nat
+open import Data.Nat.Properties using (<⇒≤; <⇒<ᵇ)
+open import Relation.Nullary.Decidable
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
-open import Data.Bool using (Bool; true; false)
+open import Data.Bool using (T; Bool; true; false)
+open import Data.Unit using (⊤; tt)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_; refl; cong; sym)
 open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; step-≡; _∎)
@@ -79,14 +81,14 @@ In other words, what are the logical conditions that define win, lose, or tie in
 Let me try to write a function for that:
 
 ```agda
-my-game : Fin 10 -> Fin 10 -> Result
-my-game n m = if (does (n <? m)) then winner A else winner B
+my-game : ℕ -> ℕ -> Result
+my-game n m = if  (does (n <? m)) then winner A else winner B
 ```
 
 I think that the demostration of the properties of my game would be something like:
 
 ```agda
-proof-my-game : ∀ (n  m : Fin 10)
+proof-my-game : ∀ (n  m : ℕ)
    → n < m
    -----------
    → my-game n m ≡ winner A
@@ -95,12 +97,12 @@ proof-my-game n m n<m =
      my-game n m
    ≡⟨⟩
      (if (does (n <? m)) then winner A else winner B)
-   ≡⟨ cong (λ x → if x then winner A else winner B) lem₁ ⟩
+   -- ≡⟨ cong (λ x → if x then winner A else winner B) (lem₁) ⟩
+   ≡⟨ cong (λ x → if x then winner A else winner B) ( dec-true (n <? m) n<m ) ⟩
      (if true then winner A else winner B)
    ≡⟨⟩
      winner A
    ∎
- where
-   lem₁ : does (n <? m) ≡ true
-   lem₁ = {!!}
   ```
+
+Maybe the proof dec-true is what I need https://agda.github.io/agda-stdlib/Relation.Nullary.Decidable.html#2394
