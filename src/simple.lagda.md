@@ -97,7 +97,6 @@ proof-my-game n m n<m =
      my-game n m
    ≡⟨⟩
      (if (does (n <? m)) then winner A else winner B)
-   -- ≡⟨ cong (λ x → if x then winner A else winner B) (lem₁) ⟩
    ≡⟨ cong (λ x → if x then winner A else winner B) ( dec-true (n <? m) n<m ) ⟩
      (if true then winner A else winner B)
    ≡⟨⟩
@@ -105,4 +104,24 @@ proof-my-game n m n<m =
    ∎
   ```
 
-Maybe the proof dec-true is what I need https://agda.github.io/agda-stdlib/Relation.Nullary.Decidable.html#2394
+# Let's aim now for intrinsic correctness
+
+Let's define some data structures that don't collide with the ones already defined.
+
+```agda
+private variable  m n k : ℕ
+
+data Result' : ℕ → ℕ → Set where
+  win₁ : n < m → Result' n m
+  win₂ : m < n → Result' n m
+  tie  : Result' n n
+```
+
+How would my game be defined this way?
+
+```agda
+my-game' : ( n m : ℕ ) -> Result' n m
+my-game' n m with isYes ( n <? m )
+...            | true = win₁ ( n < m )
+...            | false = win₂ ( m < n )
+```
