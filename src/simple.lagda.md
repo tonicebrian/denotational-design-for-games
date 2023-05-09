@@ -114,14 +114,15 @@ private variable  m n k : ℕ
 data Result' : ℕ → ℕ → Set where
   win₁ : n < m → Result' n m
   win₂ : m < n → Result' n m
-  tie  : Result' n n
+  tie  : n ≡ n → Result' n n
 ```
 
 How would my game be defined this way?
 
 ```agda
 my-game' : ( n m : ℕ ) -> Result' n m
-my-game' n m with isYes ( n <? m )
-...            | true = win₁ ( n < m )
-...            | false = win₂ ( m < n )
+my-game' n m with isYes ( n <? m ) | isYes ( m <? n ) | isYes ( n ≤? m )
+...            | true  | false | false = win₁ ( n < m )
+...            | false | true  | false = win₂ ( m < n )
+...            | false | false | true = tie ( m ≡ n )
 ```
