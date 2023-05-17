@@ -13,9 +13,10 @@ module simple where
 
 open import Data.Bool using (if_then_else_)
 open import Data.Nat
-open import Data.Nat.Properties using (<⇒≤; <⇒<ᵇ)
+open import Data.Nat.Properties using (<⇒≤; <⇒<ᵇ; <-cmp)
 open import Relation.Nullary.Decidable
 open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Definitions
 open import Relation.Nullary
 open import Data.Bool using (T; Bool; true; false)
 open import Data.Unit using (⊤; tt)
@@ -114,15 +115,15 @@ private variable  m n k : ℕ
 data Result' : ℕ → ℕ → Set where
   win₁ : n < m → Result' n m
   win₂ : m < n → Result' n m
-  tie  : n ≡ n → Result' n n
+  tie  : n ≡ m → Result' n m
 ```
 
 How would my game be defined this way?
 
 ```agda
 my-game' : ( n m : ℕ ) -> Result' n m
-my-game' n m with isYes ( n <? m ) | isYes ( m <? n ) | isYes ( n ≤? m )
-...            | true  | false | false = win₁ ( n < m )
-...            | false | true  | false = win₂ ( m < n )
-...            | false | false | true = tie ( m ≡ n )
+my-game' n m with <-cmp n m
+...    | tri< n<m _ _  = win₁ n<m
+...    | tri≈ _ n≡m _ = tie n≡m
+...    | tri> _ _ n>m = win₂ n>m
 ```
