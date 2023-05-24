@@ -127,3 +127,13 @@ my-game' n m with <-cmp n m
 ...    | tri≈ _ n≡m _ = tie n≡m
 ...    | tri> _ _ n>m = win₂ n>m
 ```
+
+What is the proof of my game?
+
+```agda
+proof-my-game' : ∀ (n  m : ℕ)
+   → n < m
+   -----------
+   → my-game' n m ≡ win₁ _
+proof-my-game' n m n<m =  {!!}
+```
