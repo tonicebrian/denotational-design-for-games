@@ -1,4 +1,8 @@
-# Exercise 1.1
+# Negative Logic
+
+Exercises from http://conal.net/misc/negative-logic.pdf
+
+## Exercise 1.1
 
 ```agda
 module conal-exercises.negative-logic where
@@ -44,7 +48,7 @@ true' = false
   ∎
 ```
 
-# Exercise 1.2. Defne not' (implementation) and ⟦not'⟧ (correctness proof).
+## Exercise 1.2. Define not' (implementation) and ⟦not'⟧ (correctness proof).
 
 ```agda
 not' : Bool → Bool
@@ -69,7 +73,7 @@ not' = not
   ∎
 ```
 
-# Exercise 1.3. Define _∧'_ and ⟦_∧'_⟧.
+## Exercise 1.3. Define _∧'_ and ⟦_∧'_⟧.
 
 ```agda
 infixr 6 _∧'_ _⟦∧'⟧_
@@ -100,7 +104,8 @@ true ⟦∧'⟧ y =
   ∎
 ```
 
-# Exercise 1.4. Likewise for disjunction _∨'_ and ⟦_∨'_⟧.
+## Exercise 1.4. Likewise for disjunction _∨'_ and ⟦_∨'_⟧.
+
 ```agda
 infixr 6 _∨'_ _⟦∨'⟧_
 
@@ -130,7 +135,7 @@ true ⟦∨'⟧ y =
   ∎
 ```
 
-# Exercise 1.5. Likewise for exclusive-or
+## Exercise 1.5. Likewise for exclusive-or
 
 ```agda
 infixr 6 _xor'_ _⟦xor'⟧_
@@ -145,7 +150,7 @@ true ⟦xor'⟧ false = refl
 true ⟦xor'⟧ true = refl
 ```
 
-# Exercise 1.6. Prove that `not'` is its own inverse
+## Exercise 1.6. Prove that `not'` is its own inverse
 
 TODO. Comment that the signature was incomplete (∀ x →)
 
@@ -162,7 +167,7 @@ not'-involutive false =
 not'-involutive true = refl
 ```
 
-# Excercise 1.7. Prove that _∧'_ is associative, commutative and idempotent
+## Excercise 1.7. Prove that _∧'_ is associative, commutative and idempotent
 
 ```agda
 import Data.Bool.Properties as BP
